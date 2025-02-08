@@ -1,0 +1,68 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:15
+    container_name: identiter-postgres
+    restart: always
+    environment:
+      POSTGRES_DB: crypto_db
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: PostgresCedy
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  identiter:
+    build: 
+      context: .
+      dockerfile: Dockerfile
+    container_name: identiter-app
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      SPRING_PROFILES_ACTIVE: prod
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/crypto_db
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: PostgresCedy
+      SPRING_JPA_HIBERNATE_DDL_AUTO: update
+      SERVER_PORT: 8080
+      JWT_SECRET: ${JWT_SECRET:-your_jwt_secret_key}
+      MAIL_HOST: ${MAIL_HOST:-smtp.gmail.com}
+      MAIL_PORT: ${MAIL_PORT:-587}
+      MAIL_USERNAME: ${MAIL_USERNAME}
+      MAIL_PASSWORD: ${MAIL_PASSWORD}
+    ports:
+      - "8080:8080"
+    restart: always
+
+  crypto-app:
+    build: 
+      context: ../
+      dockerfile: Dockerfile
+    container_name: crypto-app
+    depends_on:
+      - identiter
+    environment:
+      NODE_ENV: production
+      IDENTITER_URL: http://identiter:8080
+      SOCKET_PORT: 3000
+      JWT_SECRET: ${JWT_SECRET:-your_jwt_secret_key}
+      POSTGRES_HOST: postgres
+      POSTGRES_PORT: 5432
+      POSTGRES_DB: crypto_db
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: PostgresCedy
+    ports:
+      - "3000:3000"
+    restart: always
+
+volumes:
+  postgres_data: 
