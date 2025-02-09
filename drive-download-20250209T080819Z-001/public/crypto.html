@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Cours Cryptomonnaies en Temps Réel</title>
+  <style>
+    body { font-family: Arial, sans-serif; }
+    table { width: 80%; margin: auto; border-collapse: collapse; }
+    th, td { padding: 10px; text-align: center; border: 1px solid #ddd; }
+    th { background-color: #f4f4f4; }
+  </style>
+</head>
+<body>
+  <h1 style="text-align:center;">Cours Cryptomonnaies en Temps Réel</h1>
+  <table id="cryptoTable">
+    <thead>
+      <tr>
+        <th>Nom</th>
+        <th>Symbole</th>
+        <th>Cours (USD)</th>
+        <th>Capitalisation</th>
+        <th>Variation 24h (%)</th>
+        <th>Dernière MAJ</th>
+      </tr>
+    </thead>
+    <tbody>
+      <!-- Les données seront insérées ici -->
+    </tbody>
+  </table>
+
+  <script>
+    async function fetchCryptoData() {
+      try {
+        const response = await fetch('http://localhost:3000/api/crypto');
+        const data = await response.json();
+        const tbody = document.querySelector('#cryptoTable tbody');
+        tbody.innerHTML = '';
+        data.forEach(coin => {
+          const row = document.createElement('tr');
+
+          const dateMaj = new Date(coin.last_updated).toLocaleString();
+          row.innerHTML = `
+            <td>${coin.name}</td>
+            <td>${coin.symbol.toUpperCase()}</td>
+            <td>$${coin.current_price}</td>
+            <td>$${coin.market_cap}</td>
+            <td>${coin.price_change_24h}%</td>
+            <td>${dateMaj}</td>
+          `;
+          tbody.appendChild(row);
+        });
+      } catch (err) {
+        console.error('Erreur lors de la récupération des données', err);
+      }
+    }
+
+    // Rafraîchir toutes les 30 secondes
+    fetchCryptoData();
+    setInterval(fetchCryptoData, 30000);
+  </script>
+</body>
+</html>

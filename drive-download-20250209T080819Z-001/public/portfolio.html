@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Portefeuille</title>
+  <style>
+    body { font-family: Arial, sans-serif; }
+    table { width: 80%; margin: auto; border-collapse: collapse; }
+    th, td { padding: 10px; text-align: center; border: 1px solid #ddd; }
+    th { background-color: #f4f4f4; }
+  </style>
+</head>
+<body>
+  <h1 style="text-align:center;">Portefeuille</h1>
+  <table id="portfolioTable">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Crypto</th>
+        <th>Quantité</th>
+        <th>Prix d'achat moyen</th>
+        <th>Total investi</th>
+        <th>Date</th>
+      </tr>
+    </thead>
+    <tbody>
+      <!-- Les données seront insérées ici -->
+    </tbody>
+  </table>
+
+  <script>
+    async function fetchPortfolio() {
+      try {
+        // Pour la démo, on suppose un wallet_id = 1
+        const response = await fetch('http://localhost:3000/api/portfolio/1');
+        const data = await response.json();
+        const tbody = document.querySelector('#portfolioTable tbody');
+        tbody.innerHTML = '';
+        data.forEach(position => {
+          const date = new Date(position.created_at).toLocaleString();
+          const row = document.createElement('tr');
+          row.innerHTML = `
+            <td>${position.id}</td>
+            <td>${position.name} (${position.symbol.toUpperCase()})</td>
+            <td>${position.quantity}</td>
+            <td>${position.average_buy_price}</td>
+            <td>${position.total_invested}</td>
+            <td>${date}</td>
+          `;
+          tbody.appendChild(row);
+        });
+      } catch (err) {
+        console.error('Erreur lors de la récupération du portefeuille', err);
+      }
+    }
+    fetchPortfolio();
+  </script>
+</body>
+</html>

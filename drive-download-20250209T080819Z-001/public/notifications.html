@@ -1,0 +1,50 @@
+<!-- Nom du fichier: notifications.html -->
+<!-- filepath: /public/notifications.html -->
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Mes Notifications</title>
+  <style>
+    body { font-family: Arial, sans-serif; padding: 20px; }
+    .notification {
+      border: 1px solid #ddd;
+      padding: 10px;
+      margin-bottom: 10px;
+    }
+    .title { font-weight: bold; }
+    .date { color: gray; font-size: 0.9em; }
+  </style>
+</head>
+<body>
+  <h1>Notifications</h1>
+  <div id="notificationsContainer">
+    <!-- Les notifications seront affichées ici -->
+  </div>
+
+  <script>
+    async function fetchNotifications() {
+      try {
+        // Pour la démo, on suppose un user_id = 1
+        const response = await fetch('http://localhost:3000/api/notifications/1');
+        const notifications = await response.json();
+        const container = document.getElementById('notificationsContainer');
+        container.innerHTML = '';
+        notifications.forEach(notif => {
+          const div = document.createElement('div');
+          div.className = 'notification';
+          const date = new Date(notif.created_at).toLocaleString();
+          div.innerHTML = `<div class="title">${notif.title}</div>
+                           <div class="message">${notif.message}</div>
+                           <div class="date">${date}</div>`;
+          container.appendChild(div);
+        });
+      } catch (err) {
+        console.error('Erreur lors de la récupération des notifications', err);
+      }
+    }
+    fetchNotifications();
+    // Vous pouvez ajouter un intervalle de rafraîchissement si nécessaire
+  </script>
+</body>
+</html>

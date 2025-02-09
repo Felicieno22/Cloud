@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Historique des Transactions</title>
+  <style>
+    body { font-family: Arial, sans-serif; }
+    table { width: 80%; margin: auto; border-collapse: collapse; }
+    th, td { padding: 10px; text-align: center; border: 1px solid #ddd; }
+    th { background-color: #f4f4f4; }
+  </style>
+</head>
+<body>
+  <h1 style="text-align:center;">Historique des Transactions</h1>
+  <table id="transactionsTable">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Type</th>
+        <th>Montant</th>
+        <th>Quantité</th>
+        <th>Prix</th>
+        <th>Status</th>
+        <th>Date</th>
+      </tr>
+    </thead>
+    <tbody>
+      <!-- Les données seront insérées ici -->
+    </tbody>
+  </table>
+
+  <script>
+    async function fetchTransactions() {
+      try {
+        // Pour la démo, on suppose un wallet_id = 1
+        const response = await fetch('http://localhost:3000/api/transactions/1');
+        const data = await response.json();
+        const tbody = document.querySelector('#transactionsTable tbody');
+        tbody.innerHTML = '';
+        data.forEach(tx => {
+          const date = new Date(tx.created_at).toLocaleString();
+          const row = document.createElement('tr');
+          row.innerHTML = `
+            <td>${tx.id}</td>
+            <td>${tx.type}</td>
+            <td>${tx.amount}</td>
+            <td>${tx.quantity || '-'}</td>
+            <td>${tx.price || '-'}</td>
+            <td>${tx.status}</td>
+            <td>${date}</td>
+          `;
+          tbody.appendChild(row);
+        });
+      } catch (err) {
+        console.error('Erreur lors de la récupération des transactions', err);
+      }
+    }
+    fetchTransactions();
+  </script>
+</body>
+</html>
