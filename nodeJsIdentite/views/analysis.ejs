@@ -1,0 +1,92 @@
+<%- include('partials/header') %>
+<%- include('partials/navbar') %>
+
+<div class="container mt-4">
+    <div class="row">
+        <!-- Analyse des cryptomonnaies -->
+        <div class="col-md-6 mb-4">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="card-title mb-0">Analyse des Cryptomonnaies</h5>
+                </div>
+                <div class="card-body">
+                    <form id="cryptoAnalysisForm">
+                        <div class="mb-3">
+                            <label for="analysisType" class="form-label">Type d'analyse</label>
+                            <select class="form-select" id="analysisType" required>
+                                <option value="1er quartile">1er quartile</option>
+                                <option value="max">Maximum</option>
+                                <option value="min">Minimum</option>
+                                <option value="moyenne">Moyenne</option>
+                                <option value="ecart-type">Écart-type</option>
+                            </select>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Cryptomonnaie</label>
+                            <div class="crypto-checkboxes">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="crypto" value="Tous" id="cryptoAll" checked>
+                                    <label class="form-check-label" for="cryptoAll">Tous</label>
+                                </div>
+                                <% for(let i = 1; i <= 10; i++) { %>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="crypto" value="crypto<%= i %>" id="crypto<%= i %>">
+                                        <label class="form-check-label" for="crypto<%= i %>">Crypto <%= i %></label>
+                                    </div>
+                                <% } %>
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="dateMin" class="form-label">Date et heure min</label>
+                            <input type="datetime-local" class="form-control" id="dateMin" required>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="dateMax" class="form-label">Date et heure max</label>
+                            <input type="datetime-local" class="form-control" id="dateMax" required>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary">Analyser</button>
+                    </form>
+
+                    <div id="analysisResult" class="mt-4 d-none">
+                        <h6>Résultat de l'analyse:</h6>
+                        <p class="result-value"></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tableau des résultats -->
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="card-title mb-0">Résultats des analyses</h5>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Type</th>
+                                    <th>Crypto</th>
+                                    <th>Valeur</th>
+                                    <th>Date Min</th>
+                                    <th>Date Max</th>
+                                </tr>
+                            </thead>
+                            <tbody id="analysisTable">
+                                <!-- Les résultats seront ajoutés ici dynamiquement -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="/js/analysis.js"></script>
+<%- include('partials/footer') %>

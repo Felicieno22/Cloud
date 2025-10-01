@@ -1,0 +1,80 @@
+<%- include('partials/header') %>
+<%- include('partials/navbar') %>
+
+<div class="container mt-4">
+    <div class="row">
+        <!-- Gestion des taux de commission -->
+        <div class="col-md-6 mb-4">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="card-title mb-0">Taux de Commission</h5>
+                </div>
+                <div class="card-body">
+                    <form id="commissionRatesForm">
+                        <div class="mb-3">
+                            <label for="buyRate" class="form-label">Commission d'achat (%)</label>
+                            <input type="number" class="form-control" id="buyRate" min="0" max="100" step="0.01" required>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="sellRate" class="form-label">Commission de vente (%)</label>
+                            <input type="number" class="form-control" id="sellRate" min="0" max="100" step="0.01" required>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary">Mettre à jour</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- Analyse des commissions -->
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="card-title mb-0">Analyse des Commissions</h5>
+                </div>
+                <div class="card-body">
+                    <form id="commissionAnalysisForm">
+                        <div class="mb-3">
+                            <label for="analysisType" class="form-label">Type d'analyse</label>
+                            <select class="form-select" id="analysisType" required>
+                                <option value="Somme">Somme</option>
+                                <option value="Moyenne">Moyenne</option>
+                            </select>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="cryptoSelect" class="form-label">Cryptomonnaie</label>
+                            <select class="form-select" id="cryptoSelect" required>
+                                <option value="Tous">Tous</option>
+                                <% for(let i = 1; i <= 10; i++) { %>
+                                    <option value="crypto<%= i %>">Crypto <%= i %></option>
+                                <% } %>
+                            </select>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="dateMin" class="form-label">Date et heure min</label>
+                            <input type="datetime-local" class="form-control" id="dateMin" required>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="dateMax" class="form-label">Date et heure max</label>
+                            <input type="datetime-local" class="form-control" id="dateMax" required>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary">Analyser</button>
+                    </form>
+
+                    <div id="commissionResult" class="mt-4 d-none">
+                        <h6>Résultat de l'analyse:</h6>
+                        <p class="result-value"></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="/js/commission.js"></script>
+<%- include('partials/footer') %>

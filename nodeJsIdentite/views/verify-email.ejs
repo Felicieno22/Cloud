@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vérification Email - Crypto Exchange</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            background: linear-gradient(135deg, #1a237e 0%, #0d47a1 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+        }
+        .verify-container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .verify-card {
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .code-input {
+            letter-spacing: 0.5em;
+            text-align: center;
+            font-size: 24px;
+            font-family: monospace;
+        }
+        .code-input::-webkit-inner-spin-button,
+        .code-input::-webkit-outer-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+    </style>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css">
+</head>
+<body>
+    <div class="container">
+        <div class="verify-container">
+            <div class="card verify-card">
+                <div class="card-body p-5 text-center">
+                    <h2 class="card-title mb-4">Vérifiez votre email</h2>
+                    
+                    <% if (locals.verified) { %>
+                        <div class="alert alert-success" role="alert">
+                            <i class="bi bi-check-circle-fill me-2"></i>
+                            Votre email a été vérifié avec succès !
+                        </div>
+                        <p class="mb-4">Vous pouvez maintenant vous connecter à votre compte.</p>
+                        <a href="/login" class="btn btn-primary btn-lg">Se connecter</a>
+                    <% } else { %>
+                        <% if (locals.error) { %>
+                            <div class="alert alert-danger" role="alert">
+                                <%= error %>
+                            </div>
+                        <% } %>
+                        
+                        <% if (locals.message) { %>
+                            <div class="alert alert-success" role="alert">
+                                <%= message %>
+                            </div>
+                        <% } %>
+
+                        <p class="mb-4">
+                            Un code de vérification a été envoyé à <strong><%= email %></strong>.<br>
+                            Veuillez entrer le code à 6 chiffres ci-dessous pour activer votre compte.
+                        </p>
+
+                        <form action="/verify-email" method="POST" class="mb-4">
+                            <div class="form-group mb-4">
+                                <input type="text" 
+                                       class="form-control code-input" 
+                                       name="code" 
+                                       maxlength="6" 
+                                       pattern="\d{6}"
+                                       placeholder="------"
+                                       required>
+                            </div>
+                            <input type="hidden" name="email" value="<%= email %>">
+                            <button type="submit" class="btn btn-primary btn-lg">
+                                Vérifier
+                            </button>
+                        </form>
+
+                        <div class="mb-4">
+                            <p class="text-muted">
+                                Vous n'avez pas reçu le code ?<br>
+                                Vérifiez votre dossier spam ou demandez un nouveau code.
+                            </p>
+                        </div>
+                        <form action="/resend-verification" method="POST">
+                            <input type="hidden" name="email" value="<%= email %>">
+                            <button type="submit" class="btn btn-outline-primary">
+                                Renvoyer le code
+                            </button>
+                        </form>
+                    <% } %>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Formater automatiquement l'entrée du code
+        document.querySelector('.code-input')?.addEventListener('input', function(e) {
+            this.value = this.value.replace(/[^0-9]/g, '').slice(0, 6);
+        });
+    </script>
+</body>
+</html>
