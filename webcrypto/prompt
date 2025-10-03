@@ -1,0 +1,34 @@
+Access to XMLHttpRequest at 'http://localhost:8080/api/auth/register' from origin 'http://localhost:8081' has been blocked by CORS policy: Response to preflight request doesn't pass access control check: No 'Access-Control-Allow-Origin' header is present on the requested resource.
+auth.js:29 Error: {message: 'Network Error', response: undefined, status: undefined, headers: undefined}
+eval @ auth.js:29
+Promise.then
+_request @ Axios.js:146
+request @ Axios.js:51
+httpMethod @ Axios.js:198
+wrap @ bind.js:9
+register @ auth.js:224
+wrappedActionHandler @ vuex.esm-bundler.js:319
+dispatch @ vuex.esm-bundler.js:986
+boundDispatch @ vuex.esm-bundler.js:876
+handleSubmit @ index.js??clonedRuleSet-40.use[0]!./node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./src/views/Register.vue?vue&type=script&lang=js:61
+eval @ index.js??clonedRuleSet-40.use[0]!./node_modules/vue-loader/dist/templateLoader.js??ruleSet[1].rules[3]!./node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./src/views/Register.vue?vue&type=template&id=63ae9146&scoped=true:137
+cache.<computed>.cache.<computed> @ runtime-dom.esm-bundler.js:1886
+callWithErrorHandling @ runtime-core.esm-bundler.js:339
+callWithAsyncErrorHandling @ runtime-core.esm-bundler.js:346
+invoker @ runtime-dom.esm-bundler.js:902
+auth.js:240 Erreur détaillée lors de l'inscription: {message: 'Network Error', response: undefined, status: undefined, statusText: undefined, fullError: undefined}
+register @ auth.js:240
+await in register
+wrappedActionHandler @ vuex.esm-bundler.js:319
+dispatch @ vuex.esm-bundler.js:986
+boundDispatch @ vuex.esm-bundler.js:876
+handleSubmit @ index.js??clonedRuleSet-40.use[0]!./node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./src/views/Register.vue?vue&type=script&lang=js:61
+eval @ index.js??clonedRuleSet-40.use[0]!./node_modules/vue-loader/dist/templateLoader.js??ruleSet[1].rules[3]!./node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./src/views/Register.vue?vue&type=template&id=63ae9146&scoped=true:137
+cache.<computed>.cache.<computed> @ runtime-dom.esm-bundler.js:1886
+callWithErrorHandling @ runtime-core.esm-bundler.js:339
+callWithAsyncErrorHandling @ runtime-core.esm-bundler.js:346
+invoker @ runtime-dom.esm-bundler.js:902
+auth.js:224 
+        
+        
+       POST http://localhost:8080/api/auth/register net::ERR_FAILED

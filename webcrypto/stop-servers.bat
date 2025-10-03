@@ -1,0 +1,13 @@
+@echo off
+echo Stopping all servers...
+
+echo Stopping Vue.js frontend...
+taskkill /FI "WindowTitle eq frontend*" /F
+
+echo Stopping Node.js backend...
+taskkill /FI "WindowTitle eq backend*" /F
+
+echo Stopping Spring Boot API...
+taskkill /FI "WindowTitle eq identiter*" /F
+
+echo All servers stopped!
